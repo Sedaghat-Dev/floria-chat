@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Floria Chat</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h1 {
+            margin: 20px 0;
+            color: #333;
+        }
+        #chat-box {
+            width: 80%;
+            max-width: 600px;
+            height: 400px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            background: #fff;
+            padding: 10px;
+            overflow-y: auto;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 5px 0;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .user {
+            background: #d1e7ff;
+            text-align: right;
+        }
+        .floria {
+            background: #e8e8e8;
+            text-align: left;
+        }
+        #input-area {
+            display: flex;
+            width: 80%;
+            max-width: 600px;
+        }
+        #message {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            outline: none;
+        }
+        button {
+            padding: 10px 15px;
+            border: none;
+            background: #4CAF50;
+            color: white;
+            border-radius: 6px;
+            margin-left: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <h1>Floria Chat</h1>
+    <div id="chat-box"></div>
+
+    <div id="input-area">
+        <input type="text" id="message" placeholder="Type your message...">
+        <button onclick="sendMessage()">Send</button>
+    </div>
+
+    <script>
+        async function sendMessage() {
+            const input = document.getElementById("message");
+            const chatBox = document.getElementById("chat-box");
+            const userMessage = input.value.trim();
+
+            if (!userMessage) return;
+
+            // Add user message to chat
+            const userDiv = document.createElement("div");
+            userDiv.className = "message user";
+            userDiv.textContent = userMessage;
+            chatBox.appendChild(userDiv);
+
+            input.value = "";
+
+            // Send to Flask backend
+            const response = await fetch("/chat", {
+                method: "POST",
+                headers: {"Content-Type": "application/json"},
+                body: JSON.stringify({ message: userMessage })
+            });
+            const data = await response.json();
+
+            // Add Floria's reply
+            const floriaDiv = document.createElement("div");
+            floriaDiv.className = "message floria";
+            floriaDiv.textContent = data.floria;
+            chatBox.appendChild(floriaDiv);
+
+            // Scroll to bottom
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+    </script>
+</body>
+</html>
