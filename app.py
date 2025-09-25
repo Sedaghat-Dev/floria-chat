@@ -6,8 +6,8 @@ from peft import PeftModel
 # -------------------------
 # Hardcoded config
 # -------------------------
-BASE_MODEL_ID = "tiiuae/falcon-7b-instruct"      # base Falcon
-LORA_HF_ID = "sedaghat989Dev/floria-lora"         # Floria LoRA
+BASE_MODEL_ID = "EleutherAI/gpt-neo-2.7B"      # base Falcon
+LORA_HF_ID = "sedaghat989Dev/floria-lora-2.0"         # Floria LoRA
 MODEL_CACHE_DIR = "./models"                     # local cache
 MAX_NEW_TOKENS = 150
 
